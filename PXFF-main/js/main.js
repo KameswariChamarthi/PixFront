@@ -67,10 +67,10 @@ document.getElementById("fileInput").addEventListener("change", function(event) 
         return; // If no file is selected, exit
     }
 
-    // Validate file type (supports images and videos)
-    const validTypes = ["image/", "video/"];
+    // Validate file type (supports only images now)
+    const validTypes = ["image/"];
     if (!validTypes.some(type => file.type.startsWith(type))) {
-        alert("❌ Please upload a valid image or video file.");
+        alert("❌ Please upload a valid image file.");
         return;
     }
 
@@ -88,12 +88,6 @@ document.getElementById("fileInput").addEventListener("change", function(event) 
             img.src = e.target.result;
             img.style.maxWidth = "100%";
             previewContainer.appendChild(img);
-        } else if (file.type.startsWith("video/")) {
-            let video = document.createElement("video");
-            video.src = e.target.result;
-            video.controls = true;
-            video.style.maxWidth = "100%";
-            previewContainer.appendChild(video);
         }
 
         // Save file preview in session storage for results page
@@ -125,7 +119,7 @@ async function detectDeepfake(file) {
     formData.append("image", file);  // "image" must match Flask API
 
     try {
-        let response = await fetch("http://127.0.0.1:5000/detect-deepfake", {
+        let response = await fetch("https://web-production-7d67.up.railway.app/detect-deepfake", {
             method: "POST",
             body: formData
         });
