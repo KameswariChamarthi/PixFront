@@ -1,4 +1,6 @@
-/*=============== SHOW MENU ===============*/
+const backendUrl ="https://web-production-7d67.up.railway.app/";
+/*=========
+====== SHOW MENU ===============*/
 const showMenu = (toggleId, navId) => {
     const toggle = document.getElementById(toggleId),
           nav = document.getElementById(navId);
