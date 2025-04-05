@@ -119,7 +119,7 @@ async function detectDeepfake(file) {
     formData.append("image", file);  // "image" must match Flask API
 
     try {
-        let response = await fetch("https://web-production-7d67.up.railway.app/detect-deepfake", {
+        let response = await fetch("http://127.0.0.1:5000/detect-deepfake", {
             method: "POST",
             body: formData
         });
