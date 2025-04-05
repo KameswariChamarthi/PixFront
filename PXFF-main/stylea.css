@@ -1,0 +1,128 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #eecdf5;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background:  hsl(294, 85%, 81%);;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    font-size: 16px;
+    color: black;
+    font-weight: bold;
+}
+
+.nav-links .active {
+    color: #d07cf1;
+}
+
+.about-container {
+    width: 80%;
+    margin: 50px auto;
+    text-align: left;
+}
+
+h1 {
+    text-align: center;
+    font-size: 36px;
+    color: #320d2e;
+}
+
+h2 {
+    font-size: 24px;
+    color:  #320d2e;
+    margin-top: 20px;
+}
+
+p {
+    font-size: 18px;
+    color: #1c0426;
+}
+
+.steps {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.step {
+    background: rgb(244, 189, 238);
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    color: #333;
+}
+
+.features {
+    list-style: none;
+    padding: 0;
+}
+
+.features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    color: #33112c;
+    margin-bottom: 10px;
+}
+
+.cta-button {
+    background: #400d3d;
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.cta-button:hover {
+         background:  #e0b0dd;
+    }
+
+.btn {
+    background: #400d3d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    position: absolute; 
+    top: 175%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}
+
+.btn:hover {
+    background:  #e0b0dd;
+}

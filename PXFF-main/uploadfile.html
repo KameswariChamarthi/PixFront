@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Upload File</title>
+   <link rel="stylesheet" href="styleu.css">
+   <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+</head>
+<body>
+   
+   <div class="drag-area" id="drag-area">
+       <div class="icon">
+           <i class='bx bxs-cloud-upload'></i>
+       </div>
+       <header>Drag & Drop to Upload File</header>
+       <span>OR</span>
+       <button class="browse-btn" id="browseBtn">Browse File</button>
+       <input type="file" id="fileInput" accept="image/,video/" style="display: none;">
+   </div>
+
+   <!-- Preview of uploaded file -->
+   <div id="preview-container-wrapper">
+       <div id="preview-container"></div>
+       <button id="uploadBtn" style="display: none;">Upload & Analyze</button>
+   </div>
+
+   <script>
+       document.getElementById("browseBtn").addEventListener("click", function () {
+           document.getElementById("fileInput").click();
+       });
+
+       document.getElementById("fileInput").addEventListener("change", function(event) {
+           let file = event.target.files[0];
+
+           if (!file) return;
+
+           const validTypes = ["image/", "video/"];
+           if (!validTypes.some(type => file.type.startsWith(type))) {
+               alert("Please upload a valid image or video file.");
+               return;
+           }
+
+           let reader = new FileReader();
+           reader.onload = function(e) {
+               // Hide the drag-and-drop box
+               let dragDropBox = document.getElementById("drag-area");
+               if (dragDropBox) {
+                   dragDropBox.style.display = "none";
+               }
+
+               let previewContainer = document.getElementById("preview-container");
+               previewContainer.innerHTML = ""; // Clear previous preview
+
+               if (file.type.startsWith("image/")) {
+                   let img = document.createElement("img");
+                   img.src = e.target.result;
+                   img.style.maxWidth = "100%";
+                   img.style.borderRadius = "10px";
+                   previewContainer.appendChild(img);
+               } else if (file.type.startsWith("video/")) {
+                   let video = document.createElement("video");
+                   video.src = e.target.result;
+                   video.controls = true;
+                   video.style.maxWidth = "100%";
+                   previewContainer.appendChild(video);
+               }
+
+               // Store file data in sessionStorage for results page
+               sessionStorage.setItem("uploadedFile", e.target.result);
+               sessionStorage.setItem("fileType", file.type);
+
+               // Show the Upload & Analyze button
+               let uploadBtn = document.getElementById("uploadBtn");
+               uploadBtn.style.display = "block";
+           };
+           reader.readAsDataURL(file);
+       });
+
+       document.getElementById("uploadBtn").addEventListener("click", function () {
+           if (!sessionStorage.getItem("uploadedFile")) {
+               alert("Please upload a file before proceeding.");
+               return;
+           }
+           window.location.href = "resultspage.html";
+       });
+   </script>
+</body>
+</html>

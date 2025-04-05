@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detection Results</title>
+    <link rel="stylesheet" href="styler.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Deepfake Detection Results</h1>
+
+        <!-- Uploaded File Preview -->
+        <div class="preview-section">
+            <h2>Uploaded File:</h2>
+            <div id="file-preview"></div>
+        </div>
+
+        <!-- Progress Circle & Status -->
+        <div class="result-section">
+            <div class="progress-circle" id="progress">
+                <span id="score">--%</span>
+            </div>
+            <div class="status-icon" id="status-icon">⏳ Analyzing...</div>
+        </div>
+
+        <!-- Detailed Analysis -->
+        <div class="info-cards">
+            <div class="card"> <h3>Facial Artifacts</h3> <p id="facial-artifacts">Analyzing...</p> </div>
+            <div class="card"> <h3>Lighting Issues</h3> <p id="lighting-issues">Analyzing...</p> </div>
+            <div class="card"> <h3>Pixel Anomalies</h3> <p id="pixel-anomalies">Analyzing...</p> </div>
+        </div>
+
+        <button id="download-btn">Download Report</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let fileData = sessionStorage.getItem("uploadedFile");
+            let fileType = sessionStorage.getItem("fileType");
+            let previewContainer = document.getElementById("file-preview");
+
+            if (fileData && fileType) {
+                if (fileType.startsWith("image/")) {
+                    let img = document.createElement("img");
+                    img.src = fileData;
+                    img.style.maxWidth = "100%";
+                    previewContainer.appendChild(img);
+                } else if (fileType.startsWith("video/")) {
+                    let video = document.createElement("video");
+                    video.src = fileData;
+                    video.controls = true;
+                    video.style.maxWidth = "100%";
+                    previewContainer.appendChild(video);
+                }
+                detectDeepfake(fileData, fileType); // Call deepfake detection only if a file exists
+            } else {
+                document.getElementById("score").textContent = "No file uploaded!";
+                document.getElementById("status-icon").textContent = "⚠️ Upload a file first.";
+            }
+        });
+
+        async function detectDeepfake(fileData, fileType) {
+            let resultText = document.getElementById("score");
+            let statusIcon = document.getElementById("status-icon");
+
+            try {
+                // Convert base64 to Blob
+                let blob = await fetch(fileData).then(res => res.blob());
+                let formData = new FormData();
+                formData.append("file", blob, "uploadedFile." + fileType.split("/")[1]);
+
+                let response = await fetch("http://127.0.0.1:5000/detect-deepfake", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                let data = await response.json();
+                console.log("Deepfake Detection Result:", data);
+
+                // Update results
+                let confidenceScore = data.confidence.toFixed(2); 
+                resultText.textContent = confidenceScore + "%";
+
+                if (data.is_deepfake) {
+                    statusIcon.textContent = "❌ Deepfake Detected!";
+                    statusIcon.style.color = "red";
+                } else {
+                    statusIcon.textContent = "✅ Real Media";
+                    statusIcon.style.color = "green";
+                }
+
+                document.getElementById("facial-artifacts").textContent = data.facial_artifacts || "Not detected";
+                document.getElementById("lighting-issues").textContent = data.lighting_issues || "Not detected";
+                document.getElementById("pixel-anomalies").textContent = data.pixel_anomalies || "Not detected";
+
+            } catch (error) {
+                console.error("API Error:", error);
+                resultText.textContent = "Error!";
+                statusIcon.textContent = "⚠️ API Error";
+                statusIcon.style.color = "orange";
+            }
+        }
+
+        document.getElementById("download-btn").addEventListener("click", function () {
+            let reportContent = `
+                Deepfake Detection Report
+                -------------------------
+                Confidence Score: ${document.getElementById("score").textContent}
+                Status: ${document.getElementById("status-icon").textContent}
+
+                Facial Artifacts: ${document.getElementById("facial-artifacts").textContent}
+                Lighting Issues: ${document.getElementById("lighting-issues").textContent}
+                Pixel Anomalies: ${document.getElementById("pixel-anomalies").textContent}
+            `;
+
+            let blob = new Blob([reportContent], { type: "text/plain" });
+            let a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "Deepfake_Report.txt";
+            a.click();
+        });
+    </script>
+</body>
+</html>

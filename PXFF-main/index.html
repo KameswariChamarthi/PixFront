@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--=============== REMIXICONS ===============-->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="styles.css">
+
+    <title>Deepfake Detection - Home</title>
+</head>
+<body>
+    <!--=============== HEADER ===============-->
+    <header class="header">
+        <nav class="nav container">
+            <div class="intro">
+                <div class="intro-content">
+                    <h1>Welcome to PixelForensics</h1>
+                    <p>In today's digital world, fake media is becoming harder to detect. Deepfake videos and images can spread misinformation, harm reputations, and manipulate reality.</p>
+                    <p>Our AI-powered tool helps detect deepfake media with high accuracy. Upload a file, and we’ll analyze it for authenticity using cutting-edge machine learning models.</p>
+                    <p>Stay ahead of misinformation and ensure the authenticity of your content.</p>
+                    <a href="uploadfile.html">
+                        <button id="getStartedBtn">Get Started</button>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="nav__data">
+                <a href="#" class="nav__logo">
+                    <i class="ri-shield-keyhole-line"></i> PixelForensics
+                </a>
+
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="ri-menu-line nav__toggle-menu"></i>
+                    <i class="ri-close-line nav__toggle-close"></i>
+                </div>
+            </div>
+
+            <!--=============== NAV MENU ===============-->
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link">Home</a></li>
+                    <li><a href="uploadfile.html" class="nav__link">Upload File</a></li>
+                    <li><a href="resultspage.html" class="nav__link">Detection Results</a></li>
+                    
+                    <!--=============== DROPDOWN: How It Works ===============-->
+                    <li class="dropdown__item">                      
+                        <div class="nav__link dropdown__button">
+                            How It Works <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                        </div>
+                        <div class="dropdown__container">
+                            <div class="dropdown__content">
+                                <div class="dropdown__group">
+                                    <div class="dropdown__icon">
+                                        <i class='bx bxl-tailwind-css'></i>
+                                    </div> 
+                                    <span class="dropdown__title">Detection Process</span>
+                                    <ul class="dropdown__list">
+                                        <div class="steps">
+                                            <div class="step">
+                                                <i class="ri-upload-cloud-line"></i>
+                                                <h3>Upload File</h3>
+                                                <p>Select and upload an image or video for deepfake detection.</p>
+                                            </div>
+                                        
+                                            <div class="step">
+                                                <i class="ri-brain-line"></i>
+                                                <h3>AI Processing</h3>
+                                                <p>Our AI analyzes the file using advanced deepfake detection algorithms.</p>
+                                            </div>
+                                        
+                                            <div class="step">
+                                                <i class="ri-check-line"></i>
+                                                <h3>Results</h3>
+                                                <p>View the detection results to determine authenticity.</p>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li><a href="about.html" class="nav__link">About</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!--=============== IMAGE UPLOAD SECTION ===============-->
+    <section class="upload-section">
+        <h2>Upload Image for Deepfake Detection</h2>
+        <input type="file" id="imageInput" accept="image/*">
+        <button onclick="detectDeepfake()">Check</button>
+        <img id="preview" style="display: none; width: 200px;">
+        <p id="result"></p>
+    </section>
+
+    <!--=============== MAIN JS ===============-->
+    <script src="js/main.js"></script>
+
+</body>
+</html>
