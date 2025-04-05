@@ -118,7 +118,7 @@ document.getElementById("fileInput").addEventListener("change", function(event) 
 /*=============== SEND FILE TO FLASK API ===============*/
 async function detectDeepfake(file) {
     let formData = new FormData();
-    formData.append("image", file);  // "image" must match Flask API
+    formData.append("file", file);  // "image" must match Flask API
 
     try {
         let response = await fetch("https://web-production-7d67.up.railway.app/detect-deepfake", { // <-- Updated URL
@@ -130,6 +130,8 @@ async function detectDeepfake(file) {
 
         let data = await response.json();
         console.log("Deepfake Detection Result:", data);
+        console.log("Form Data Sent:", formData);
+
 
         // Store API results for results page
         sessionStorage.setItem("isDeepfake", data.is_deepfake);
