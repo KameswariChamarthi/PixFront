@@ -1,6 +1,6 @@
 const backendUrl ="https://web-production-7d67.up.railway.app/";
-/*=========
-====== SHOW MENU ===============*/
+
+/*========= SHOW MENU ===============*/
 const showMenu = (toggleId, navId) => {
     const toggle = document.getElementById(toggleId),
           nav = document.getElementById(navId);
@@ -14,48 +14,6 @@ const showMenu = (toggleId, navId) => {
 };
 
 showMenu('nav-toggle', 'nav-menu');
-
-/*=============== SHOW DROPDOWN MENU ===============*/
-const dropdownItems = document.querySelectorAll('.dropdown__item');
-
-dropdownItems.forEach((item) => {
-    const dropdownButton = item.querySelector('.dropdown__button');
-
-    dropdownButton.addEventListener("click", () => {
-        const showDropdown = document.querySelector(".show-dropdown");
-
-        toggleItem(item);
-
-        if (showDropdown && showDropdown !== item) {
-            toggleItem(showDropdown);
-        }
-    });
-});
-
-const toggleItem = (item) => {
-    const dropdownContainer = item.querySelector(".dropdown__container");
-
-    if (item.classList.contains("show-dropdown")) {
-        dropdownContainer.removeAttribute("style");
-        item.classList.remove("show-dropdown");
-    } else {
-        dropdownContainer.style.height = dropdownContainer.scrollHeight + "px";
-        item.classList.add("show-dropdown");
-    }
-};
-
-/*=============== DELETE DROPDOWN STYLES ===============*/
-const mediaQuery = matchMedia("(min-width: 1118px)"),
-      dropdownContainer = document.querySelectorAll(".dropdown__container");
-
-const removeStyle = () => {
-    if (mediaQuery.matches) {
-        dropdownContainer.forEach((e) => e.removeAttribute("style"));
-        dropdownItems.forEach((e) => e.classList.remove("show-dropdown"));
-    }
-};
-
-addEventListener("resize", removeStyle);
 
 /*=============== FILE UPLOAD LOGIC ===============*/
 document.getElementById("browseBtn").addEventListener("click", function () {
@@ -118,7 +76,7 @@ document.getElementById("fileInput").addEventListener("change", function(event) 
 /*=============== SEND FILE TO FLASK API ===============*/
 async function detectDeepfake(file) {
     let formData = new FormData();
-    formData.append("file", file);  // "image" must match Flask API
+    formData.append("file", file);  // Ensure this is "file" as per Flask API
 
     try {
         let response = await fetch("https://web-production-7d67.up.railway.app/detect-deepfake", { // <-- Updated URL
@@ -130,8 +88,6 @@ async function detectDeepfake(file) {
 
         let data = await response.json();
         console.log("Deepfake Detection Result:", data);
-        console.log("Form Data Sent:", formData);
-
 
         // Store API results for results page
         sessionStorage.setItem("isDeepfake", data.is_deepfake);
@@ -145,7 +101,6 @@ async function detectDeepfake(file) {
         alert("⚠️ Deepfake detection failed. Please try again.");
     }
 }
-
 
 /*=============== REDIRECT TO RESULTS PAGE ===============*/
 function redirectToResultsPage() {
