@@ -100,7 +100,50 @@
     </section>
 
     <!--=============== MAIN JS ===============-->
-    <script src="js/main.js"></script>
+    <script src="js/main.js">
+      function detectDeepfake() {
+    const input = document.getElementById('imageInput');
+    const file = input.files[0];
+    const result = document.getElementById('result');
+    const preview = document.getElementById('preview');
+
+    if (!file) {
+        result.innerHTML = '<span style="color:red;">Please select an image file.</span>';
+        return;
+    }
+
+    // Show image preview
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    fetch('https://web-production-7d67.up.railway.app/detect-deepfake', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            result.innerHTML = `<span style="color:red;">Error: ${data.error}</span>`;
+        } else {
+            const color = data.is_deepfake === "Deepfake" ? "red" : "green";
+            result.innerHTML = `<span style="color:${color}; font-weight: bold;">
+                Prediction: ${data.is_deepfake} (${data.confidence}% confidence)
+            </span>`;
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        result.innerHTML = '<span style="color:red;">Something went wrong. Please try again.</span>';
+    });
+}  
+    </script>
 
 </body>
 </html>
