@@ -1,21 +1,3 @@
-const backendUrl ="https://web-production-7d67.up.railway.app/";
-
-/*========= SHOW MENU ===============*/
-const showMenu = (toggleId, navId) => {
-    const toggle = document.getElementById(toggleId),
-          nav = document.getElementById(navId);
-
-    if (toggle && nav) {
-        toggle.addEventListener('click', () => {
-            nav.classList.toggle('show-menu');
-            toggle.classList.toggle('show-icon');
-        });
-    }
-};
-
-showMenu('nav-toggle', 'nav-menu');
-
-/*=============== FILE UPLOAD LOGIC ===============*/
 document.getElementById("browseBtn").addEventListener("click", function () {
     document.getElementById("fileInput").click();
 });
@@ -62,7 +44,7 @@ document.getElementById("fileInput").addEventListener("change", function(event) 
         let interval = setInterval(() => {
             if (progress >= 100) {
                 clearInterval(interval);
-                detectDeepfake(file);  // 🚀 Call API before redirecting
+                detectDeepfake(file);  // Call API before redirecting
             } else {
                 progress += 10;
                 progressBar.style.width = progress + "%";
@@ -79,7 +61,7 @@ async function detectDeepfake(file) {
     formData.append("file", file);  // Ensure this is "file" as per Flask API
 
     try {
-        let response = await fetch("https://web-production-7d67.up.railway.app/detect-deepfake", { // <-- Updated URL
+        let response = await fetch("http://localhost:5000/detect-deepfake", { // Change this URL based on your server
             method: "POST",
             body: formData
         });
@@ -89,20 +71,20 @@ async function detectDeepfake(file) {
         let data = await response.json();
         console.log("Deepfake Detection Result:", data);
 
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+
         // Store API results for results page
         sessionStorage.setItem("isDeepfake", data.is_deepfake);
         sessionStorage.setItem("confidence", data.confidence);
         sessionStorage.setItem("processedImage", data.processed_image);
 
         // Redirect after receiving API response
-        redirectToResultsPage();
+        window.location.href = "resultspage.html";
     } catch (error) {
         console.error("API Error:", error);
         alert("⚠️ Deepfake detection failed. Please try again.");
     }
-}
-
-/*=============== REDIRECT TO RESULTS PAGE ===============*/
-function redirectToResultsPage() {
-    window.location.href = "resultspage.html";
 }
