@@ -59,10 +59,9 @@ document.getElementById("fileInput").addEventListener("change", function(event) 
 async function detectDeepfake(file) {
     let formData = new FormData();
     formData.append("file", file);  // Ensure this is "file" as per Flask API
-    const apiUrl = "https://web-production-7d67.up.railway.app/detect-deepfake";
-
+    
     try {
-        let response = await fetch("https://web-production-7d67.up.railway.app/detect-deepfake", { // Change this URL based on your server
+        let response = await fetch("https://pixelforensics-production.up.railway.app/detect-deepfake", { // Change this URL based on your server
             method: "POST",
             body: formData
         });
