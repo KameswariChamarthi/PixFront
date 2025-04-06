@@ -24,6 +24,14 @@
        <div id="preview-container"></div>
        <button id="uploadBtn" style="display: none;">Upload & Analyze</button>
    </div>
+   <section class="upload-section">
+    <h2>Upload Image for Deepfake Detection</h2>
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="detectDeepfake()">Check</button>
+    <img id="preview" style="display: none; width: 200px;">
+    <p id="result"></p>
+</section>
+
 
    <script>
        document.getElementById("browseBtn").addEventListener("click", function () {
